@@ -40,11 +40,7 @@ using YourNamespace;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar opções do MongoDB
-var mongoOptions = builder.Configuration
-    .GetSection(MongoDbSettingsOptions.Section)
-    .Get<MongoDbSettingsOptions>();
-
-builder.Services.AddMongoService(mongoOptions);
+builder.Services.AddMongoRepoNet(builder.Configuration!);
 
 var app = builder.Build();
 
