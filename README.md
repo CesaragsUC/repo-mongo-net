@@ -18,13 +18,6 @@ Usando o NuGet Package Manager:
 
 Crie uma classe MongoDbSettings.cs:
 
-```csharp
-public class MongoDbSettings
-{
-    public string? ConnectionString { get; set; }
-    public string? DatabaseName { get; set; }
-}
-
 ```
 appsetings.json:
 
@@ -36,18 +29,6 @@ appsetings.json:
   }
 }
 ```
-Crie uma  ServiceCollectionExtensions.cs:
-
-```csharp
-
-    public static IServiceCollection MongoDbService(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<MongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)));
-        services.AddSingleton<MongoDbContext>();
-
-        return services;
-    }
-```
 
 No seu Program.cs:
 
@@ -58,10 +39,8 @@ using YourNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrando o repositório
-builder.Services.MongoDbService(builder.Configuration)
-builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
+// Configurar opções do MongoDB
+builder.Services.AddMongoRepoNet(builder.Configuration!);
 
 var app = builder.Build();
 
