@@ -11,7 +11,7 @@ public class MongoDbContext : IMongoDbContext
 {
     private readonly IMongoDatabase _database;
 
-    public MongoDbContext(IOptions<MongoDbSettings> settings)
+    public MongoDbContext(IOptions<MongoDbSettingsOptions> settings)
     {
         if (!BsonSerializer.SerializerRegistry.GetSerializer(typeof(Guid)).GetType().Equals(typeof(GuidSerializer)))
         {

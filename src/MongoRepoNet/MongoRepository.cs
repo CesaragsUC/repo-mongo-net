@@ -16,14 +16,13 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         _dbContext = dbContext;
     }
 
-    public async Task<PagedResult<TEntity>> GetAll(int page = 1, int pageSize = 10, string sort = "asc")
+    public async Task<PagedResult<TEntity>> GetAllAsync(int page = 1, int pageSize = 10)
     {
         var builder = Builders<TEntity>.Filter;
         var filterDefinition = builder.Empty;
 
         var results = await _mongoCollection
             .Find(filterDefinition)
-            .Sort(sort)
             .Skip((page - 1) * pageSize)
             .Limit(pageSize)
             .ToListAsync();
@@ -40,13 +39,13 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         };
     }
 
-    public async Task<TEntity> GetById(string field, Guid id)
+    public async Task<TEntity> GetByIdAsync(string field, Guid id)
     {
         var filter = Builders<TEntity>.Filter.Eq(field, id);
         return await _mongoCollection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<PagedResult<TEntity>> GetByName(string field, string nome)
+    public async Task<PagedResult<TEntity>> GetByNameAsync(string field, string nome)
     {
         // Usar Regex para encontrar nomes que começam com a string fornecida (case-insensitive)
         var filter = Builders<TEntity>.Filter.Regex(field, new BsonRegularExpression(nome, "i"));
@@ -65,7 +64,7 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         };
     }
 
-    public async Task<IEnumerable<TEntity>> GetByFilter(Expression<Func<TEntity, bool>> filter)
+    public async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> filter)
     {
 
         return await _mongoCollection.Find(filter).ToListAsync();
@@ -76,7 +75,7 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         await _mongoCollection.InsertOneAsync(obj);
     }
 
-    public async Task InsertMany(List<TEntity> obj)
+    public async Task InsertManyAsync(List<TEntity> obj)
     {
         await _mongoCollection.InsertManyAsync(obj);
     }
@@ -98,11 +97,23 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         await collection.UpdateOneAsync(filter, update);
     }
 
-    public async Task Delete(string field, Guid id, string collectionName)
+    public async Task DeleteAsync(string field, Guid id, string collectionName)
     {
         var filter = Builders<TEntity>.Filter.Eq(field, id);
         var collection = _dbContext.GetCollection<TEntity>(collectionName);
         await collection.DeleteOneAsync(filter);
+    }
+
+    public async Task DeleteAsync(string field, Guid id)
+    {
+        var filter = Builders<TEntity>.Filter.Eq(field, id);
+        await _mongoCollection.DeleteOneAsync(filter);
+    }
+
+    public async Task DeleteByNameAsync(string field, string nome)
+    {
+        var filter = Builders<TEntity>.Filter.Eq(field, nome);
+        await _mongoCollection.DeleteOneAsync(filter);
     }
 
     public async Task UpdateAsync(string id, TEntity obj)
@@ -120,20 +131,6 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
         var update = Builders<TEntity>.Update.Set(field, value);
         await _mongoCollection.UpdateOneAsync(whereCondition, update);
     }
-
-
-    public async Task Delete(string field, Guid id)
-    {
-        var filter = Builders<TEntity>.Filter.Eq(field, id);
-        await _mongoCollection.DeleteOneAsync(filter);
-    }
-
-    public async Task DeleteByName(string field, string nome)
-    {
-        var filter = Builders<TEntity>.Filter.Eq(field, nome);
-        await _mongoCollection.DeleteOneAsync(filter);
-    }
-
 
     private object GetEntityId(string field, TEntity entity)
     {
@@ -188,5 +185,6 @@ public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity 
 
         return updateDefinition;
     }
+
 }
 
