@@ -1,4 +1,4 @@
-﻿namespace MongoRepoNet;
+﻿namespace MongoRepoNet.Utils;
 
 public class PagedResult<T>
 {

@@ -13,7 +13,7 @@
     <Description>Este pacote oferece uma implementação completa de um repositório genérico para aplicações .NET com MongoDb, facilitando a criação, leitura, atualização e remoção (CRUD) de entidades no banco de dados.</Description>
     <AssemblyVersion>1.0.0.2</AssemblyVersion>
     <FileVersion>1.0.0.2</FileVersion>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <PackageReleaseNotes>Refatorar repositório MongoDB e adicionar suporte DI
 
 Atualizado `IMongoRepository` com documentos XML e nomenclatura assíncrona.

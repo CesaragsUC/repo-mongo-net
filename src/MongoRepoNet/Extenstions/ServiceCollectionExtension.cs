@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
+using MongoRepoNet.Abstractions;
+using MongoRepoNet.Context;
+using MongoRepoNet.Repository;
+using MongoRepoNet.Settings;
 
-namespace MongoRepoNet;
+namespace MongoRepoNet.Extenstions;
 
 public static class ServiceCollectionExtension
 {

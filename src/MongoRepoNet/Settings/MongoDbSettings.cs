@@ -1,4 +1,4 @@
-﻿namespace MongoRepoNet;
+﻿namespace MongoRepoNet.Settings;
 
 
 public class MongoDbSettingsOptions
