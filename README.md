@@ -1,56 +1,55 @@
-# 📦 RepoMongoNet a MongoDb Repository for .NET
 
-Um repositório genérico com implementações completas para MongoDb usando .NET
+# 📦 RepoMongoNet - A MongoDb Repository for .NET
 
-✨ Descrição
+A generic repository with complete implementations for MongoDB using .NET.
 
-Este pacote oferece uma implementação completa de um repositório genérico para aplicações .NET com MongoDb, facilitando a criação, leitura, atualização e remoção (CRUD) de entidades no banco de dados.
+✨ Description
 
-Com ele, você pode simplificar o acesso a dados usando boas práticas, abstraindo a camada de repositório e deixando sua aplicação mais limpa e desacoplada.
+This package provides a complete implementation of a generic repository for .NET applications with MongoDB, simplifying Create, Read, Update, and Delete (CRUD) operations for entities in the database.
 
-🚀 Instalação
-Você pode instalar o pacote através do NuGet Package Manager ou da CLI:
+With it, you can streamline data access using best practices, abstracting the repository layer and making your application cleaner and more decoupled.
 
-Usando o NuGet Package Manager:
+🚀 Installation
+
+You can install the package via NuGet Package Manager or the CLI:
+
+Using NuGet Package Manager:
 <pre> Install-Package RepoMongoNet </pre>
 
-🛠️ Configuração
+🛠️ Configuration
 
-Crie uma classe MongoDbSettings.cs:
+Create a class called MongoDbSettings.cs:
 
 ```
-appsetings.json:
+appsettings.json:
 
 ```json
 {
   "MongoDbSettings": {
-    "ConnectionString": "mongodb://userdb:password@localhost:27017/?authMechanism=SCRAM-SHA-256"
+    "ConnectionString": "mongodb://userdb:password@localhost:27017/?authMechanism=SCRAM-SHA-256",
     "DatabaseName": "MyStore"
   }
 }
 ```
 
-No seu Program.cs:
+In your Program.cs:
 
 ```csharp
-
-using Microsoft.EntityFrameworkCore;
 using YourNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar opções do MongoDB
+// Configure MongoDB options
 builder.Services.AddMongoRepoNet(builder.Configuration!);
 
 var app = builder.Build();
-
 ```
 
-🎯 Uso
+🎯 Usage
 
-Criando uma Entidade
+Creating an Entity
 
-Defina uma entidade no seu projeto:
+Define an entity in your project:
 ```csharp
 public class Product
 {
@@ -58,16 +57,16 @@ public class Product
     public string Name { get; set; }
     public decimal Price { get; set; }
 }
-
 ```
-Usando o Repositório
 
-Exemplo de uso do repositório genérico no Controller:
+Using the Repository
+
+Example of using the generic repository in a Controller:
 
 ```csharp
 public class ProductsController : ControllerBase
 {
-    private readonly IMongoRepository<Products> _repository;
+    private readonly IMongoRepository<Product> _repository;
 
     public ProductsController(IMongoRepository<Product> repository)
     {
@@ -78,7 +77,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> Create(Product product)
     {
         await _repository.InsertAsync(product);
-        return Ok("Produto criado com sucesso!");
+        return Ok("Product successfully created!");
     }
 
     [HttpGet]
@@ -88,50 +87,52 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 }
-
 ```
 
+⚙️ Features
 
-⚙️ Funcionalidades
+Full CRUD:
 
-CRUD Completo:
+* InsertAsync(TEntity obj) - Adds a new entity.
+* GetById(string field, Guid id) - Retrieves an entity by ID.
+* GetAllAsync(int page = 1, int pageSize = 10, string sort = "asc") - Retrieves all entities with pagination.
+* UpdateAsync(string field, TEntity obj, string collectionName) - Updates an existing entity.
+* Delete(string field, Guid id, string collectionName) - Removes an entity by ID.
+* And much more..
 
-* InsertAsync(TEntity obj) - Adiciona uma nova entidade.
-* GetById(string field, Guid id) - Retorna uma entidade pelo ID.
-* GetAllAsync(int page = 1, int pageSize = 10, string sort = "asc") - Retorna todas as entidades om paginação.
-* UpdateAsync(string field, TEntity obj, string collectionName) - Atualiza uma entidade existente.
-* Delete(string field, Guid id, string collectionName) - Remove uma entidade pelo ID.
-* Performance:
+Performance:
 
-Uso eficiente de conexões com o banco de dados PostgreSQL.
-Genérico:
+Efficient use of MongoDB database connections.
 
-Pode ser usado com qualquer classe de entidade que tenha um identificador.
+Generic:
 
-🧩 Requisitos
+Can be used with any entity class that has an identifier.
 
-* .NET 6 ou superior
+🧩 Requirements
+
+* .NET 6+
 * MongoDB.Driver 2.29.0+
 
-🗂️ Estrutura do Pacote
+🗂️ Package Structure
 
 Interfaces:
 
-``` IMongoRepository<T>: Interface do repositório genérico. ```
-  
-Implementações:
+``` IMongoRepository<T>: Generic repository interface. ```
 
-``` MongoRepository<T>: Implementação concreta.```
+Implementations:
 
-🤝 Contribuição
-Contribuições são bem-vindas!
+``` MongoRepository<T>: Concrete implementation. ```
 
-* Faça um fork do repositório.
-* Crie uma branch para sua feature (git checkout -b feature/NovaFeature).
-* Commit suas mudanças (git commit -m "Adicionei uma nova feature X").
-* Faça um push para a branch (git push origin feature/NovaFeature).
-* Abra um Pull Request.
+🤝 Contribution
 
-⭐ Dê uma estrela!
+Contributions are welcome!
 
-Se você achou este pacote útil, não se esqueça de dar uma ⭐ no GitHub!
+* Fork the repository.
+* Create a branch for your feature (git checkout -b feature/NewFeature).
+* Commit your changes (git commit -m "Added a new feature X").
+* Push to the branch (git push origin feature/NewFeature).
+* Open a Pull Request.
+
+⭐ Give it a Star!
+
+If you find this package useful, don't forget to give it a ⭐ on GitHub!
